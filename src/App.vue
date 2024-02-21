@@ -1,18 +1,22 @@
 <template>
   <div id="app">
-    <input v-model="m" @input="inputMessage" type="text" placeholder="Введите текст">
-    <input v-model="e" @input="eKeys" type="text" placeholder="e">
-    <input v-model="n" @input="nKeys" type="text" placeholder="n">
-    <input v-model="encryptedMessage" type="text" placeholder="текст" readonly>
+    <h1><span class="colorRSA">RSA</span> АЛГОРИТМ</h1>
+    <InputText v-model="m" @input="inputMessage" type="text" placeholder="Введите текст" />
+    <InputText v-model="e" @input="eKeys" type="text" placeholder="e"/>
+    <InputText v-model="n" @input="nKeys" type="text" placeholder="n"/>
+    <InputText v-model="encryptedMessage" type="text" placeholder="Зашифрованный текст" readonly/>
 
-    <input v-model="m1" @input="destMessage" type="text">
-    <input v-model="d" @input="dKeys" type="text">
-    <input v-model="n" @input="nKeys" type="text">
-    <input :value="decryptedMessage" type="text" readonly>
+    <InputText v-model="m1" @input="destMessage" type="text" placeholder="Введите шифрованный текст" />
+    <InputText v-model="d" @input="dKeys" type="text" placeholder="d" />
+    <InputText v-model="n" @input="nKeys" type="text" placeholder="n" />
+    <InputText :value="decryptedMessage" type="text" placeholder="Расшифрованный текст" readonly />
+    <p>© Made by Rolan</p>
   </div>
 </template>
 
 <script>
+
+
 import { gcd } from 'mathjs';
 
 let SimpleNumbers = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293];
@@ -97,3 +101,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.colorRSA {
+  color: orange;
+}
+</style>
