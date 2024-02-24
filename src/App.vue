@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1><span class="colorRSA">RSA</span> АЛГОРИТМ</h1>
+    <h1><span class="colorRSA">Электронная</span> подпись</h1>
     <InputText v-model="m" @input="inputMessage" type="text" placeholder="Введите текст" />
     <InputText v-model="e" @input="eKeys" type="text" placeholder="e"/>
     <InputText v-model="n" @input="nKeys" type="text" placeholder="n"/>
@@ -10,13 +10,15 @@
     <InputText v-model="d" @input="dKeys" type="text" placeholder="d" />
     <InputText v-model="n" @input="nKeys" type="text" placeholder="n" />
     <InputText :value="decryptedMessage" type="text" placeholder="Расшифрованный текст" readonly />
+
+    <button @click="signMessage">Подписать сообщение</button>
+    <button @click="verifySignature">Проверить подпись</button>
+    
     <p>© Made by Rolan</p>
   </div>
 </template>
 
 <script>
-
-
 import { gcd } from 'mathjs';
 
 let SimpleNumbers = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293];
@@ -30,7 +32,8 @@ export default {
       m1: '',
       d: '',
       encryptedMessage: '',
-      decryptedMessage: ''
+      decryptedMessage: '',
+      signature: ''
     }
   },
 
@@ -73,11 +76,9 @@ export default {
       this.updateEncryptedMessage();
     },
 
-
     destMessage() {
       this.updateDescryptedMessage();
     },
-
 
     updateEncryptedMessage() {
       let result1 = '';
@@ -97,6 +98,30 @@ export default {
         result2 += String.fromCharCode(Number(result));
       }
       this.decryptedMessage = result2;
+    },
+
+    calculateHash(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash += str.charCodeAt(i);
+      }
+      return hash.toString(16);
+    },
+
+    signMessage() {
+      const hash = this.calculateHash(this.m);
+      this.signature = BigInt(parseInt(hash, 16)) ** BigInt(this.d) % BigInt(this.n);
+    },
+
+    verifySignature() {
+      const hash = this.calculateHash(this.m);
+      const decodedSignature = BigInt(this.signature) ** BigInt(this.e) % BigInt(this.n);
+
+      if (BigInt(parseInt(hash, 16)) === decodedSignature) {
+        alert("Подпись верна!");
+      } else {
+        alert("Подпись неверна!");
+      }
     }
   }
 }
@@ -104,6 +129,6 @@ export default {
 
 <style>
 .colorRSA {
-  color: orange;
+  color: #5cd16f;
 }
 </style>
